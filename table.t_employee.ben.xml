@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<setup xmlns="http://databene.org/benerator/0.9.7"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://databene.org/benerator/0.9.7 benerator-0.9.7.xsd"
+        defaultEncoding="UTF-8"
+        defaultDataset="RU"
+        defaultLocale="ru"
+        defaultLineSeparator="\r\n"
+	defaultSeparator=";"
+	>
+	<comment>[[POPULATE TABLE t_employee]] Processed...</comment>
+	
+   	<generate type="t_employee" count="20" consumer="db,ConsoleExporter">
+   		<id name="id_employee" mode="ignored"/>
+	   	<reference name="id_person" targetType="s_person" source="db" distribution="random"/>
+	   	<reference name="id_job" targetType="s_job_title" source="db" distribution="random"/>
+	   	<reference name="id_structure" targetType="t_orgstructure" source="db" distribution="random"/>
+		<attribute name="main_job" type="int" min="0" max="1" distribution="random"/>
+		<attribute name="date_set" type="datetime" generator="dtGen"/>
+		<attribute name="date_end" type="datetime" generator="dtGen"/>
+		<attribute name="active" type="int" min="0" max="1" distribution="random"/>
+   	</generate>
+ 
+	<comment>[[POPULATE TABLE t_employee]] End. OK!</comment>
+	</setup>

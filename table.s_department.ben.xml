@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<setup xmlns="http://databene.org/benerator/0.9.7"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://databene.org/benerator/0.9.7 benerator-0.9.7.xsd"
+        defaultEncoding="UTF-8"
+        defaultDataset="RU"
+        defaultLocale="ru"
+        defaultLineSeparator="\r\n"
+	defaultSeparator=";"
+	>
+	<comment>[[POPULATE TABLE s_department]] Processed...</comment>
+
+    <iterate type="s_department" source="csv/department.csv" count="20" consumer="db,ConsoleExporter" distribution="random" unique="true">
+    	<id name="id_dept" mode="ignored"/>
+<!-- 	    <attribute name="short_caption" type='string' values=""/> -->
+	    <attribute name="note" type='string' generator="new SeedSentenceGenerator('csv/notes.txt',3)" maxLength="255" unique="true"/>
+    </iterate>
+
+	<comment>[[POPULATE TABLE s_department]] End. OK!</comment>
+	</setup>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<setup xmlns="http://databene.org/benerator/0.9.7"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://databene.org/benerator/0.9.7 benerator-0.9.7.xsd"
+        defaultEncoding="UTF-8"
+        defaultDataset="RU"
+        defaultLocale="ru"
+        defaultLineSeparator="\r\n"
+	defaultSeparator=";"
+	>
+	
+	<comment>[[POPULATE TABLE s_organization]] Processed...</comment>
+
+	<generate type="s_organization" count="20" consumer="db,ConsoleExporter">
+		<attribute name="bik" type='string' pattern='[0-9]{9}'/>
+	
+		<variable name="c" generator="CompanyNameGenerator" dataset="US" locale="us"/>
+		<attribute name="caption" type='string' script="c.fullName" />
+		<attribute name="short_caption" type='string' script="c.shortName" />
+		<attribute name="form_sobs" type='string' script="c.legalForm" />
+
+		<variable name="a" generator="AddressGenerator" dataset="US" locale="us"/>
+		<attribute name="ur_strana" type='string' script="a.country" />
+		<attribute name="ur_index" type='string' pattern="[0-9]{6}"/>
+		<attribute name="ur_nas_punkt" type='string' script="a.city" />
+		<attribute name="ur_ulica" type='string' script="a.street" />
+
+		<attribute name='ur_dom' type='int'  min='1' max='150' />
+		<attribute name='ur_office' type='int' min='1' max='100' />
+
+		<attribute name="telefon" type="string" script="a.officePhone"  unique="true" />
+		<attribute name="faks" type="string" script="a.fax"  unique="true" />
+		
+		<variable name="d" generator="DomainGenerator" dataset="US" locale="us"/>
+		<variable name="p" generator="PersonGenerator" dataset="RU" locale="ru"/>
+
+		<variable name="tag1" source="memstore" type="sgnMALE" distribution="random"/>
+		<variable name="tag2" source="memstore" type="sgnFEMALE" distribution="random"/>
+		<variable name="sgn" script="{js: (p.gender.name()=='MALE') ? sgnMALE : sgnFEMALE}"/>
+		
+		<attribute name="email" type='string' script="{js:toLink(p.givenName+p.familyName)+'@'+d}" converter="ToLowerCaseConverter, UniqueStringConverter"/>
+		<attribute name="webpage" type='string' script="d" converter="ToLowerCaseConverter, UniqueStringConverter"/>
+		<attribute name="fio_ruk" type='string' script="p.familyName +' '+ p.givenName +' '+ sgn.secondgiven"/>
+		<attribute name="rschet" type='string' pattern="[0-9]{20}"/>
+		<attribute name="kschet" type='string' pattern="[0-9]{20}"/>
+		<attribute name="INN" type='string' pattern="[0-9]{10}"/>
+		<attribute name="KPP" type='string' pattern="[0-9]{9}"/>
+
+		<attribute name="date_update" type="datetime" generator="dtGen"/>
+		<attribute name="note" type='string' generator="new SeedSentenceGenerator('csv/notes.txt',3)" maxLength="255"/>
+	</generate>
+	<comment>[[POPULATE TABLE s_organization]] End. OK!</comment>
+	
+</setup>

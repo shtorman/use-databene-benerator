@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<setup xmlns="http://databene.org/benerator/0.9.7"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://databene.org/benerator/0.9.7 benerator-0.9.7.xsd"
+        defaultEncoding="UTF-8"
+        defaultDataset="RU"
+        defaultLocale="ru"
+        defaultLineSeparator="\r\n"
+	defaultSeparator=";"
+	>
+	
+	<comment>[[POPULATE TABLE s_person]] Processed...</comment>
+
+	<generate type="s_person" count="100" consumer="db,ConsoleExporter">
+		<variable name="p" generator="PersonGenerator" dataset="RU" locale="ru"/>
+		
+		<variable name="tag1" source="memstore" type="sgnMALE" distribution="random"/>
+		<variable name="tag2" source="memstore" type="sgnFEMALE" distribution="random"/>
+		<variable name="sgn" script="{js: (p.gender.name()=='MALE') ? sgnMALE : sgnFEMALE}"/>
+		
+		<attribute name="name" type='string' script="p.familyName"/>
+		<attribute name="fam" type='string' script="p.givenName"/>
+		<attribute name="otch" type='string' script="sgn.secondgiven"/>
+		
+		<variable name="d" generator="DomainGenerator" dataset="US" locale="us"/>
+		<attribute name="email" type='string' script="{js:toLink(p.givenName+p.familyName)+'@'+d}" converter="ToLowerCaseConverter, UniqueStringConverter"/>
+		
+		<variable name="a" generator="AddressGenerator" dataset="US" locale="us"/>
+		<attribute name="telefone" type="string" script="a.officePhone"  unique="true" />
+		<attribute name="sex" script="p.gender" map="'MALE'->'1','FEMALE'->'0'"/>
+		<attribute name="date_born" type="datetime" script="p.birthDate"/>
+		<attribute name="admin" values="'n'"/>
+		
+		<attribute name="login" type='string' script="{js:toLink(p.givenName+p.familyName)}" converter="ToLowerCaseConverter, UniqueStringConverter" unique="true"/>
+		<attribute name="password" type='string' pattern="[A-Z]{2}[A-z][0-9]{3}[A-z][0-9]{3}[A-Z]{2}" unique="true"/>
+
+		<attribute name="strana" type='string' script="a.country" />
+		<attribute name="postindex" type='string' pattern="[0-9]{6}"/>
+		<attribute name="nas_punkt" type='string' script="a.city" />
+		<attribute name="street" type='string' script="a.street" />
+
+		<attribute name='home' type='int'  min='1' max='150' />
+		<attribute name='flat' type='int' min='1' max='150' />
+
+		<attribute name="semeinoe_polojenie" type='int'  min='0' max='1' />
+		
+		<attribute name="date_change" type="datetime" generator="dtGen"/>
+		<attribute name="note" type='string' generator="new SeedSentenceGenerator('csv/notes.txt',3)" maxLength="255"/>
+	</generate>
+	<comment>[[POPULATE TABLE s_person]] End. OK!</comment>
+	
+</setup>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<setup xmlns="http://databene.org/benerator/0.9.7"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://databene.org/benerator/0.9.7 benerator-0.9.7.xsd"
+        defaultEncoding="UTF-8"
+        defaultDataset="RU"
+        defaultLocale="ru"
+        defaultLineSeparator="\r\n"
+	defaultSeparator=";"
+	>
+	<comment>[[POPULATE TABLE s_job_title]] Processed...</comment>
+	
+	<iterate type="s_job_title" source="csv/job_title.csv" consumer="db,ConsoleExporter">
+		<attribute name="place" type='int' min='1' max='3' />
+		<attribute name="treb_staj_rab" type='int' min='1' max='3' />
+		<attribute name="date_set" type="datetime" generator="dtGen"/>
+		<attribute name="note" type='string' generator="new SeedSentenceGenerator('csv/notes.txt',3)" maxLength="255"/>
+	</iterate>
+	<comment>[[POPULATE TABLE s_job_title]] End. OK!</comment>
+</setup>
