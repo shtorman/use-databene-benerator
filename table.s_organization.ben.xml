@@ -10,7 +10,7 @@
 	>
 	
 	<comment>[[POPULATE TABLE s_organization]] Processed...</comment>
-
+<!-- для создания данных - generate -->
 	<generate type="s_organization" count="20" consumer="db,ConsoleExporter">
 		<attribute name="bik" type='string' pattern='[0-9]{9}'/>
 	
@@ -18,7 +18,7 @@
 		<attribute name="caption" type='string' script="c.fullName" />
 		<attribute name="short_caption" type='string' script="c.shortName" />
 		<attribute name="form_sobs" type='string' script="c.legalForm" />
-
+	
 		<variable name="a" generator="AddressGenerator" dataset="US" locale="us"/>
 		<attribute name="ur_strana" type='string' script="a.country" />
 		<attribute name="ur_index" type='string' pattern="[0-9]{6}"/>

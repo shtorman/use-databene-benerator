@@ -1,5 +1,5 @@
 function toLink (str) {
-	var space = '';
+	var space = ''; //space - не пробел, а отсутствие символа
 	str = str.toLowerCase();
 	var transl = {
 	'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'e', 'ж': 'zh', 

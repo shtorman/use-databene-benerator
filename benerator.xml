@@ -7,28 +7,41 @@
 	defaultLocale="ru"
 	defaultLineSeparator="\r\n"
 	defaultSeparator=";">
-
+<!-- подключаем модули для работы с БД и *.csv-файлами-->
 	<import platforms="db,csv" />
+	
+<!-- подключаем модули для генерации предметно-ориентированных данных:
+наименование и форма собственности организации, название улицы, номер дома, фамилия, имя и т.п. -->	
 	<import defaults="true" domains="organization,address,person,net" />
+	
+<!-- подключаем модули для работы генераторами-->
 	<import class="org.databene.benerator.distribution.function.*,
 	org.databene.benerator.primitive.*,
 	org.databene.platform.db.*"/>
+	
+<!-- подключаем модули для генерации времени и даты-->
 	<import class="org.databene.commons.TimeUtil"/>
 	
-	
+<!-- подключаем базу данных:
+url - qs - название БД, characterEncoding=UTF-8 - задание кодировки для взаимодействия с БД
+catalog - название БД
+-->	
 	<database id="db"
     	url="jdbc:mysql://localhost:3306/qs?characterEncoding=UTF-8"
     	driver="com.mysql.jdbc.Driver"
         user="root"
 		password=""
 		catalog="qs"/>
-
+<!-- задание имени для сохранения данных в памяти-->
 	<memstore id="memstore"/>
 	
 	<comment>Подготавливаем базу данных</comment>
- 	<execute uri="mysql/truncate_tables.mysql.sql" target="db" />
+	<execute uri="mysql/create_tables.mysql.sql" target="db" /> <!-- создание таблиц ДБ  -->
+ 	<execute uri="mysql/truncate_tables.mysql.sql" target="db" /><!-- очистка таблиц БД -->
 	
-<<include uri="table.s_organization.ben.xml" />
+<include uri="table.s_organization.ben.xml" /><!-- с коментариями внутри -->
 <!-- 	<include uri="table.s_job_title.ben.xml" /> -->
-<!--	<include uri="table.s_type_doc.ben.xml" />-->
+<!--	<include uri="table.s_department.ben.xml" />-->
+<!--	<include uri="table.s_person.ben.xml" />-->
+<!--	<include uri="table.t_employee.ben.xml" />-->
 </setup>
